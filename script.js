@@ -67,7 +67,7 @@ window.addEventListener("wheel", (e) => {
 let lastTouchY = 0;
 let touchAccumulator = 0; // acumula el movimiento
 
-const touchSensitivity = 0.2; // factor de sensibilidad: 0.2 = 5x más suave
+const touchSensitivity = 0.1; // factor de sensibilidad: 0.1 = 10x más suave
 
 window.addEventListener("touchstart", (e) => {
     lastTouchY = e.touches[0].clientY;
