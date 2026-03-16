@@ -65,32 +65,39 @@ window.addEventListener("wheel", (e) => {
 
 // ----- 5️⃣ Scroll táctil en móvil -----
 let lastTouchY = 0;
+let touchAccumulator = 0; // acumula el movimiento
+
+const touchSensitivity = 0.2; // factor de sensibilidad: 0.2 = 5x más suave
 
 window.addEventListener("touchstart", (e) => {
     lastTouchY = e.touches[0].clientY;
+    touchAccumulator = 0;
 });
 
 window.addEventListener("touchmove", (e) => {
     const touchY = e.touches[0].clientY;
-    const delta = lastTouchY - touchY;
+    let delta = lastTouchY - touchY;
+
+    // Reducir la sensibilidad
+    touchAccumulator += delta * touchSensitivity;
 
     const hero = document.getElementById("hero-container");
     const heroRect = hero.getBoundingClientRect();
 
-    if (delta > 0) { // Scroll hacia abajo
-        if (currentFrame < frameCount && heroRect.bottom > 0) {
-            e.preventDefault();
-            currentFrame += scrollSpeed;
-            if (currentFrame > frameCount) currentFrame = frameCount;
-            updateFrame();
-        }
-    } else if (delta < 0) { // Scroll hacia arriba
-        if (currentFrame > 1 && heroRect.top >= 0) {
-            e.preventDefault();
-            currentFrame -= scrollSpeed;
-            if (currentFrame < 1) currentFrame = 1;
-            updateFrame();
-        }
+    // Avanzar o retroceder frames solo si se supera un umbral
+    const frameThreshold = 1; // 1 pixel acumulado = 1 frame (ajustable)
+    while (touchAccumulator >= frameThreshold && currentFrame < frameCount && heroRect.bottom > 0) {
+        e.preventDefault();
+        currentFrame++;
+        updateFrame();
+        touchAccumulator -= frameThreshold;
+    }
+
+    while (touchAccumulator <= -frameThreshold && currentFrame > 1 && heroRect.top >= 0) {
+        e.preventDefault();
+        currentFrame--;
+        updateFrame();
+        touchAccumulator += frameThreshold;
     }
 
     lastTouchY = touchY;
