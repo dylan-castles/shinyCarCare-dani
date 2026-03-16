@@ -8,19 +8,28 @@ const scrollSpeed = 4; // ajusta a tu gusto
 // Contenedor de texto
 const textoContenedor = document.getElementById("textoPrincipal");
 
+// ----- 1️⃣ Preload de frames -----
+const frames = [];
+for (let i = 1; i <= frameCount; i++) {
+    const frame = new Image();
+    const num = String(i).padStart(4, '0');
+    frame.src = `./img/frames/frame${num}.webp`;
+    frames.push(frame);
+}
+
+// ----- 2️⃣ Función para actualizar el frame y texto -----
 function updateFrame() {
-    const frameNumber = String(currentFrame).padStart(4, '0');
-    img.src = `./img/frames/frame${frameNumber}.webp`;
+    img.src = frames[currentFrame - 1].src;
 
     // Sincronizar scroll interno del contenedor de texto
-    if(textoContenedor){
+    if (textoContenedor) {
         const progress = currentFrame / frameCount;
         const maxScroll = textoContenedor.scrollHeight - textoContenedor.clientHeight;
         textoContenedor.scrollTop = progress * maxScroll;
     }
 }
 
-// Al cargar la página, empezamos arriba y frame inicial
+// ----- 3️⃣ Iniciar página -----
 window.addEventListener("load", () => {
     window.scrollTo(0, 0);
     currentFrame = 1;
@@ -32,23 +41,19 @@ window.addEventListener("beforeunload", () => {
     window.scrollTo(0, 0);
 });
 
-// Evento de scroll
+// ----- 4️⃣ Scroll con ratón -----
 window.addEventListener("wheel", (e) => {
     const hero = document.getElementById("hero-container");
     const heroRect = hero.getBoundingClientRect();
 
-    // Scroll hacia abajo
-    if (e.deltaY > 0) {
+    if (e.deltaY > 0) { // Scroll hacia abajo
         if (currentFrame < frameCount && heroRect.bottom > 0) {
             e.preventDefault();
             currentFrame += scrollSpeed;
             if (currentFrame > frameCount) currentFrame = frameCount;
             updateFrame();
         }
-    }
-
-    // Scroll hacia arriba
-    else if (e.deltaY < 0) {
+    } else if (e.deltaY < 0) { // Scroll hacia arriba
         if (currentFrame > 1 && heroRect.top >= 0) {
             e.preventDefault();
             currentFrame -= scrollSpeed;
@@ -56,4 +61,37 @@ window.addEventListener("wheel", (e) => {
             updateFrame();
         }
     }
+}, { passive: false });
+
+// ----- 5️⃣ Scroll táctil en móvil -----
+let lastTouchY = 0;
+
+window.addEventListener("touchstart", (e) => {
+    lastTouchY = e.touches[0].clientY;
+});
+
+window.addEventListener("touchmove", (e) => {
+    const touchY = e.touches[0].clientY;
+    const delta = lastTouchY - touchY;
+
+    const hero = document.getElementById("hero-container");
+    const heroRect = hero.getBoundingClientRect();
+
+    if (delta > 0) { // Scroll hacia abajo
+        if (currentFrame < frameCount && heroRect.bottom > 0) {
+            e.preventDefault();
+            currentFrame += scrollSpeed;
+            if (currentFrame > frameCount) currentFrame = frameCount;
+            updateFrame();
+        }
+    } else if (delta < 0) { // Scroll hacia arriba
+        if (currentFrame > 1 && heroRect.top >= 0) {
+            e.preventDefault();
+            currentFrame -= scrollSpeed;
+            if (currentFrame < 1) currentFrame = 1;
+            updateFrame();
+        }
+    }
+
+    lastTouchY = touchY;
 }, { passive: false });
