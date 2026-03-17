@@ -294,6 +294,131 @@ nav ul li a:hover {
 #textoPrincipal .ultimo {
     margin-bottom: 200px;
 }
+#seccionServicios {
+    color: black;
+    width:fit-content;
+    margin: 5% 15% 0 15%;
+    padding: 0 15px 0 15px;
+    position: relative;
+    z-index: 1;
+}
+#seccionServicios::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: red;
+  transform: translateX(-50%);
+  z-index: -10;
+}
+#seccionServicios h1 {
+    font-size: 50px;
+    margin: auto;
+    text-align: center;
+    border-bottom: 2px solid red;
+    width: fit-content;
+    background-color: white;
+}
+#dividerCarSiluette {
+    width: 100%;
+    height: auto;
+    margin-bottom: 0;
+}
+#seccionPrecios {
+    width: 100%;
+    height: 200px;
+    background-color: black;
+    flex-shrink: 0;
+    position: relative;
+    top: -10px;
+}
+#seccionPrecios h1 {
+    margin: 0;
+}
+#seccionGaleria {
+    width: 100%;
+    height: 200px;
+    background-color: #000000;
+    flex-shrink: 0;
+    position: relative;
+    top: -10px;
+}
+#seccionGaleria h1 {
+    margin: 0;
+}
+#seccionContacto{
+    width: 100%;
+    height: 200px;
+    background-color: #ff0000;
+    flex-shrink: 0;
+    position: relative;
+    top: -10px;
+    border-top: white 15px solid;
+    border-top-style: double;
+    border-bottom: white 15px solid;
+    border-bottom-style: double;
+}
+#seccionContacto h1 {
+    margin: 0;
+}
+#serviciosContainer h3{
+    color: red;
+    font-size: 40px;
+    margin: 0;
+    font-weight: 200;
+}
+#serviciosContainer img{
+    border-radius: 30px;
+    width: 500px;
+}
+#servicioExterior {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    gap: 20px;
+}
+#servicioInterior {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    gap: 20px;
+    margin-left: auto;
+}
+#servicioDetailing {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    gap: 20px;
+}
+.verticalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+.servicio {
+    background-color: #dedede;
+    width: 75%;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 30px 0 30px 0;
+    border-radius: 30px;
+    z-index: 1;
+}
+.servicio p{
+    color: black;
+    font-size: 25px;
+    text-align: justify;
+    margin: 20px;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+}
+.servicio img{
+  transition: opacity 1s ease;
+}
 
 /* Responsive */
 @media (max-width: 1440px) {
@@ -303,6 +428,18 @@ nav ul li a:hover {
     #textoPrincipal h2 {
         font-size: 40px;
     }
+    #seccionServicios h1 {
+        font-size: 40px;
+    }
+    #serviciosContainer h3{
+        font-size: 30px;
+    }
+    .servicio p{
+        font-size: 15px;
+    }
+    #serviciosContainer img{
+        width: 300px;
+    }
 }
 @media (max-width: 1050px) {
     #linksNav {
@@ -310,6 +447,17 @@ nav ul li a:hover {
     }
     header {
         justify-content:center;
+    }
+    .servicio {
+        width: 100%;
+        border-radius: 15px;
+    }
+    #serviciosContainer img{
+        width: 200px;
+        border-radius: 15px;
+    }
+    #serviciosContainer h3{
+        font-size: 20px;
     }
 }
 @media (max-width: 845px) {
@@ -321,6 +469,19 @@ nav ul li a:hover {
     }
     #textoPrincipal h3 {
         font-size: 15px;
+    }
+    #servicioInterior p {
+    order: 2; /* ahora aparece después */
+    }
+    #servicioInterior .verticalContent {
+        order: 1; /* ahora aparece primero */
+    }
+    .servicio{
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+        #serviciosContainer img{
+        width: 300px;
     }
 }
 @media (max-width: 600px) {
@@ -371,5 +532,11 @@ nav ul li a:hover {
     #textoDiferente {
         font-size: 12px;
         margin: 20px 0 10px 0;
+    }
+    #seccionServicios h1 {
+        font-size: 25px;
+    }
+    #seccionServicios {
+        margin: 15% 5% 0 5%;
     }
 }

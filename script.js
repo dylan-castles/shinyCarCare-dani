@@ -67,7 +67,7 @@ window.addEventListener("wheel", (e) => {
 let lastTouchY = 0;
 let touchAccumulator = 0; // acumula el movimiento
 
-const touchSensitivity = 0.1; // factor de sensibilidad: 0.1 = 10x más suave
+const touchSensitivity = 0.2; // factor de sensibilidad: 0.2 = 5x más suave
 
 window.addEventListener("touchstart", (e) => {
     lastTouchY = e.touches[0].clientY;
@@ -102,3 +102,40 @@ window.addEventListener("touchmove", (e) => {
 
     lastTouchY = touchY;
 }, { passive: false });
+
+// ----- 6️⃣ Cambiar imágenes de servicios cada 2s -----
+
+const imgExterior = document.getElementById("servicioImgExterior");
+const imgInterior = document.getElementById("servicioImgInterior");
+const imgDetailing = document.getElementById("servicioImgDetailing");
+
+let estadoServicios = false;
+
+function fadeChange(img, nuevaSrc){
+    img.style.opacity = 0;
+
+    setTimeout(() => {
+        img.src = nuevaSrc;
+
+        setTimeout(() => {
+            img.style.opacity = 1;
+        }, 50); // pequeño delay para que el navegador registre el cambio
+
+    }, 1000); // mismo tiempo que el transition
+}
+
+setInterval(() => {
+
+    if (estadoServicios) {
+        fadeChange(imgExterior, "./img/capoAvsD.png");
+        fadeChange(imgInterior, "./img/asientosAvsD.png");
+        fadeChange(imgDetailing, "./img/polishAvsD.png");
+    } else {
+        fadeChange(imgExterior, "./img/llantasAvsD.png");
+        fadeChange(imgInterior, "./img/moquetaAvsD.png");
+        fadeChange(imgDetailing, "./img/detailAvsD.png");
+    }
+
+    estadoServicios = !estadoServicios;
+
+}, 5000);
