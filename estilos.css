@@ -497,7 +497,7 @@ nav ul li a:hover {
         height: 65%;
     }
     #textoPrincipal h1{
-        font-size: 35px;
+        font-size: 30px;
     }
     #animacionCoche {
         width: 100%;
@@ -538,5 +538,9 @@ nav ul li a:hover {
     }
     #seccionServicios {
         margin: 15% 5% 0 5%;
+    }
+    .btnRojo {
+        padding: 8px 16px;
+        font-size: small;
     }
 }
