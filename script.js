@@ -279,16 +279,11 @@ function crearImagen(url, onReady) {
 
   const id = extraerIdDrive(url);
   if (id) {
-    img.src = `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
-    img.onerror = () => {
-      img.onerror = () => { if (onReady) onReady(); }; // 2º fallo → resuelve igual
-      img.src = `https://lh3.googleusercontent.com/d/${id}=w800`;
-    };
-    img.onload = () => { if (onReady) onReady(); };
+    img.src = `https://lh3.googleusercontent.com/d/${id}`;
   } else {
     img.src = url;
-    img.onload = img.onerror = () => { if (onReady) onReady(); };
   }
+  img.onload = img.onerror = () => { if (onReady) onReady(); };
 
   div.appendChild(img);
   return div;
