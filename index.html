@@ -82,7 +82,7 @@
                         <span>Cera</span>
                         <span>Pulido llantas</span>
                     </div>
-                    <button class="btnLargoServicios" onclick="window.location.href='#seccionPrecios'">VER EJEMPLOS</button>
+                    <button class="btnLargoServicios" onclick="window.location.href='#galeriaLimpiezaExterior'">VER EJEMPLOS</button>
                 </div>
             </div>
             <div class="servicio" id="servicioInterior">
@@ -96,7 +96,7 @@
                         <span>Limpieza plásticos</span>
                         <span>Limpieza asientos</span>
                     </div>
-                    <button class="btnLargoServicios" onclick="window.location.href='#seccionPrecios'">VER EJEMPLOS</button>
+                    <button class="btnLargoServicios" onclick="window.location.href='#galeriaLimpiezaInterior'">VER EJEMPLOS</button>
                 </div>
                 <div class="verticalContent order1">
                     <h3>Limpieza Interior</h3>
@@ -117,7 +117,7 @@
                         <span>Pulido de faros</span>
                         <span>Tratamiento hidrofóbico</span>
                     </div>
-                    <button class="btnLargoServicios" onclick="window.location.href='#seccionPrecios'">VER EJEMPLOS</button>
+                    <button class="btnLargoServicios" onclick="window.location.href='#galeriaDetailing'">VER EJEMPLOS</button>
                 </div>
             </div>
         </div>
@@ -186,10 +186,40 @@
         </div>
     </div>
     <div id="seccionContacto">
-        <h1>Contacto</h1>
+        <div id="contactoContainer">
+            <h1>Contacto:</h1>
+            <p><i class="fa-solid fa-location-dot"></i> Sant Fost de Campsentelles, Barcelona, España</p>
+            <p>Reservas: <i class="fa-brands fa-instagram" aria-label="Instagram"></i>
+                <a id="instagramLink" href="https://www.instagram.com/shiny.carcare" target="_blank" rel="noopener noreferrer">
+                shiny.carcare
+            </a></p>
+        </div>
     </div>
     <div id="seccionGaleria">
         <h1>Galería</h1>
+        <div id="contenedorGaleria">
+            <h2 id="galeriaLimpiezaExterior">Limpieza Exterior</h2>
+            <div class="galeriaContainer" id="galeriaLimpiezaExteriorContainer">
+                <p>No hay imágenes disponibles.</p>
+            </div>
+            <h2 id="galeriaLimpiezaInterior">Limpieza Interior</h2>
+            <div class="galeriaContainer" id="galeriaLimpiezaInteriorContainer">
+                <p>No hay imágenes disponibles.</p>
+            </div>   
+            <h2 id="galeriaDetailing">Detailing</h2>
+            <div class="galeriaContainer" id="galeriaDetailingContainer">
+                <p>No hay imágenes disponibles.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <span class="cerrar"><i class="fa-solid fa-circle-xmark"></i></span>
+        <img class="modal-content" id="modalImg">
+        <div class="modal-controls">
+            <button id="prev"><i class="fa-solid fa-arrow-left"></i></button>
+            <button id="next"><i class="fa-solid fa-arrow-right"></i></button>
+        </div>
     </div>
     <div id="badgeOferta" onclick="irAPrecios()">
         <i class="fa-solid fa-certificate"></i>

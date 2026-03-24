@@ -1,30 +1,69 @@
-const loader = document.getElementById("loader");
-if (loader) loader.style.display = "flex"; // mostrar al iniciar
+// ============================================================
+//  CONFIGURACIÓN Y CONSTANTES
+// ============================================================
 
-// ------- Precios predefinidos (antes de fetch) -------
 const PRECIOS_DEFAULT = {
   "pack básico": 30,
   "pack premium": 50,
   "pack full": 80,
   "pulido faros": 25,
   "protección hidrofóbica": 20,
-  "limpieza tapicerías": 30
+  "limpieza tapicerías": 30,
 };
 const DESCUENTO_DEFAULT = 0;
-// -------------------------------------
 
 
-const frameCount = 151; // total de frames
+const API_PRECIOS =
+  "https://script.google.com/macros/s/AKfycbzKbrHdjmGKwL42o-GfndjHsrNOT0LR_eST00c5jM9v4TISRonEiP3CRa9asdIt17YoZA/exec";
+const API_GALERIAS =
+  "https://script.google.com/macros/s/AKfycbyodLxKgTW6FZsOnMHEEaORUAcxRJYz0HkwWu29F0Fwv6szCJtJ2kF33EqbG4kx-TzW/exec";
+
+const GALERIA_MAP = {
+  "limpieza exterior": "galeriaLimpiezaExteriorContainer",
+  "limpieza interior": "galeriaLimpiezaInteriorContainer",
+  detailing: "galeriaDetailingContainer",
+};
+
+// ============================================================
+//  UTILIDADES
+// ============================================================
+
+/** Formatea un número como precio: "29,99€" */
+function formatearPrecio(precio) {
+  return `${precio.toFixed(2).replace(".", ",")}€`;
+}
+
+/** Muestra u oculta el loader global */
+function setLoader(visible) {
+  const loader = document.getElementById("loader");
+  if (loader) loader.style.display = visible ? "flex" : "none";
+}
+
+// ============================================================
+//  LOADER — mostrar al iniciar
+// ============================================================
+
+setLoader(true);
+
+// Promesas de carga para ocultar el loader solo cuando TODO esté listo
+let resolverPrecios, resolverGalerias;
+const promesaPrecios = new Promise((res) => (resolverPrecios = res));
+const promesaGalerias = new Promise((res) => (resolverGalerias = res));
+
+Promise.all([promesaPrecios, promesaGalerias]).then(() => setLoader(false));
+
+// ============================================================
+//  ANIMACIÓN DE FRAMES (scroll) — sin modificar
+// ============================================================
+
+const frameCount = 151;
 const img = document.getElementById("fotoAnimacion");
 let currentFrame = 1;
 
-// Velocidad de la animación: cuántos frames avanzan/retroceden por scroll
-const scrollSpeed = 4; // ajusta a tu gusto
+const scrollSpeed = 4;
 
-// Contenedor de texto
 const textoContenedor = document.getElementById("textoPrincipal");
 
-// ----- 1️⃣ Preload de frames -----
 const frames = [];
 for (let i = 1; i <= frameCount; i++) {
     const frame = new Image();
@@ -33,11 +72,9 @@ for (let i = 1; i <= frameCount; i++) {
     frames.push(frame);
 }
 
-// ----- 2️⃣ Función para actualizar el frame y texto -----
 function updateFrame() {
     img.src = frames[currentFrame - 1].src;
 
-    // Sincronizar scroll interno del contenedor de texto
     if (textoContenedor) {
         const progress = currentFrame / frameCount;
         const maxScroll = textoContenedor.scrollHeight - textoContenedor.clientHeight;
@@ -45,31 +82,28 @@ function updateFrame() {
     }
 }
 
-// ----- 3️⃣ Iniciar página -----
 window.addEventListener("load", () => {
     window.scrollTo(0, 0);
     currentFrame = 1;
     updateFrame();
 });
 
-// Forzar scroll arriba al recargar
 window.addEventListener("beforeunload", () => {
     window.scrollTo(0, 0);
 });
 
-// ----- 4️⃣ Scroll con ratón -----
 window.addEventListener("wheel", (e) => {
     const hero = document.getElementById("hero-container");
     const heroRect = hero.getBoundingClientRect();
 
-    if (e.deltaY > 0) { // Scroll hacia abajo
+    if (e.deltaY > 0) {
         if (currentFrame < frameCount && heroRect.bottom > 0) {
             e.preventDefault();
             currentFrame += scrollSpeed;
             if (currentFrame > frameCount) currentFrame = frameCount;
             updateFrame();
         }
-    } else if (e.deltaY < 0) { // Scroll hacia arriba
+    } else if (e.deltaY < 0) {
         if (currentFrame > 1 && heroRect.top >= 0) {
             e.preventDefault();
             currentFrame -= scrollSpeed;
@@ -79,11 +113,10 @@ window.addEventListener("wheel", (e) => {
     }
 }, { passive: false });
 
-// ----- 5️⃣ Scroll táctil en móvil -----
 let lastTouchY = 0;
-let touchAccumulator = 0; // acumula el movimiento
+let touchAccumulator = 0;
 
-const touchSensitivity = 0.2; // factor de sensibilidad: 0.2 = 5x más suave
+const touchSensitivity = 0.2;
 
 window.addEventListener("touchstart", (e) => {
     lastTouchY = e.touches[0].clientY;
@@ -94,14 +127,12 @@ window.addEventListener("touchmove", (e) => {
     const touchY = e.touches[0].clientY;
     let delta = lastTouchY - touchY;
 
-    // Reducir la sensibilidad
     touchAccumulator += delta * touchSensitivity;
 
     const hero = document.getElementById("hero-container");
     const heroRect = hero.getBoundingClientRect();
 
-    // Avanzar o retroceder frames solo si se supera un umbral
-    const frameThreshold = 1; // 1 pixel acumulado = 1 frame (ajustable)
+    const frameThreshold = 1;
     while (touchAccumulator >= frameThreshold && currentFrame < frameCount && heroRect.bottom > 0) {
         e.preventDefault();
         currentFrame++;
@@ -119,7 +150,9 @@ window.addEventListener("touchmove", (e) => {
     lastTouchY = touchY;
 }, { passive: false });
 
-// ----- 6️⃣ Cambiar imágenes de servicios cada 2s -----
+// ============================================================
+//  IMÁGENES DE SERVICIOS (rotación cada 5s)
+// ============================================================
 
 const imgExterior = document.getElementById("servicioImgExterior");
 const imgInterior = document.getElementById("servicioImgInterior");
@@ -127,135 +160,205 @@ const imgDetailing = document.getElementById("servicioImgDetailing");
 
 let estadoServicios = false;
 
-function fadeChange(img, nuevaSrc){
-    img.style.opacity = 0;
-
+function fadeChange(img, nuevaSrc) {
+  if (!img) return;
+  img.style.opacity = 0;
+  setTimeout(() => {
+    img.src = nuevaSrc;
     setTimeout(() => {
-        img.src = nuevaSrc;
-
-        setTimeout(() => {
-            img.style.opacity = 1;
-        }, 50); // pequeño delay para que el navegador registre el cambio
-
-    }, 1000); // mismo tiempo que el transition
+      img.style.opacity = 1;
+    }, 50);
+  }, 1000);
 }
 
-setInterval(() => {
-
-    if (estadoServicios) {
-        fadeChange(imgExterior, "./img/capoAvsD.png");
-        fadeChange(imgInterior, "./img/asientosAvsD.png");
-        fadeChange(imgDetailing, "./img/polishAvsD.png");
-    } else {
-        fadeChange(imgExterior, "./img/llantasAvsD.png");
-        fadeChange(imgInterior, "./img/moquetaAvsD.png");
-        fadeChange(imgDetailing, "./img/detailAvsD.png");
-    }
-
-    estadoServicios = !estadoServicios;
-
+// Guardamos la referencia para poder limpiarla si fuera necesario
+const intervaloServicios = setInterval(() => {
+  if (estadoServicios) {
+    fadeChange(imgExterior, "./img/capoAvsD.png");
+    fadeChange(imgInterior, "./img/asientosAvsD.png");
+    fadeChange(imgDetailing, "./img/polishAvsD.png");
+  } else {
+    fadeChange(imgExterior, "./img/llantasAvsD.png");
+    fadeChange(imgInterior, "./img/moquetaAvsD.png");
+    fadeChange(imgDetailing, "./img/detailAvsD.png");
+  }
+  estadoServicios = !estadoServicios;
 }, 5000);
 
-const URL = "https://script.google.com/macros/s/AKfycbzKbrHdjmGKwL42o-GfndjHsrNOT0LR_eST00c5jM9v4TISRonEiP3CRa9asdIt17YoZA/exec";
-
-fetch(URL)
-  .then(response => response.json())
-  .then(data => {
-    if (!Array.isArray(data)) {
-      throw new Error("Formato inválido");
-    }
-    mostrarPrecios(data);
-    if (loader) loader.style.display = "none"; // ocultar loader al cargar
-  })
-  .catch(error => {
-    console.error("Error API, usando fallback:", error);
-    const dataFallback = Object.entries(PRECIOS_DEFAULT).map(([tipo, precio]) => ({
-      Tipo: tipo,
-      Precios: precio
-    }));
-    dataFallback.push({
-      Tipo: "Descuento",
-      Precios: DESCUENTO_DEFAULT
-    });
-    mostrarPrecios(dataFallback);
-    if (loader) loader.style.display = "none"; // ocultar loader aunque falle
-  });
+// ============================================================
+//  PRECIOS
+// ============================================================
 
 function mostrarPrecios(data) {
-  let precios = {};
+  const precios = {};
   let descuento = 0;
 
-  // 🔹 1. Guardamos todo en un objeto limpio
-  data.forEach(item => {
-    const tipo = item.Tipo.trim().toLowerCase(); 
+  data.forEach((item) => {
+    const tipo = item.Tipo.trim().toLowerCase();
     const precio = item.Precios;
-
     if (tipo === "descuento") {
-      // Si la API devuelve 15 en lugar de 0.15, convertir a decimal
       descuento = precio > 1 ? precio / 100 : precio;
     } else {
       precios[tipo] = precio;
     }
   });
 
-  // 🔹 2. Actualizar badge de oferta
+  // Badge de oferta
   const badge = document.getElementById("textoOferta");
   if (badge) {
-    if (descuento > 0) {
-      const porcentaje = Math.round(descuento * 100);
-      badge.textContent = `-${porcentaje}%`;
-    } else {
-      badge.textContent = "OFERTA";
-    }
+    badge.textContent = descuento > 0 ? `-${Math.round(descuento * 100)}%` : "OFERTA";
   }
 
-  // 🔹 3. Función para aplicar descuento
   function aplicarDescuento(precio) {
     return parseFloat((precio - precio * descuento).toFixed(2));
   }
 
-  // 🔹 4. Función para actualizar precio con antiguo
   function actualizarPrecio(id, precioOriginal) {
     if (precioOriginal == null) return;
     const contenedor = document.getElementById(id);
     if (!contenedor) return;
-
     const precioFinal = aplicarDescuento(precioOriginal);
-
-    const antiguo = contenedor.parentElement.querySelector(".precioAntiguo");
-    if (contenedor) contenedor.textContent = formatearPrecio(precioFinal);
+    const antiguo = contenedor.parentElement?.querySelector(".precioAntiguo");
+    contenedor.textContent = formatearPrecio(precioFinal);
     if (antiguo) antiguo.textContent = formatearPrecio(precioOriginal);
   }
 
-  // 🔹 5. Extras sin descuento
   function actualizarSoloPrecio(id, precio) {
     const el = document.getElementById(id);
     if (el && precio != null) el.textContent = formatearPrecio(precio);
   }
 
-  // 🔹 6. Pintar precios de packs
   actualizarPrecio("precioBasico", precios["pack básico"]);
   actualizarPrecio("precioPremium", precios["pack premium"]);
   actualizarPrecio("precioFull", precios["pack full"]);
 
-  // 🔹 7. Extras
   actualizarSoloPrecio("precioFaros", precios["pulido faros"]);
   actualizarSoloPrecio("precioHidrofobico", precios["protección hidrofóbica"]);
   actualizarSoloPrecio("precioTapiceria", precios["limpieza tapicerías"]);
+}
 
-  // 🔹 8. Formatear precio
-  function formatearPrecio(precio) {
-    return `${precio.toFixed(2).replace(".", ",")}€`;
+fetch(API_PRECIOS)
+  .then((res) => res.json())
+  .then((data) => {
+    if (!Array.isArray(data)) throw new Error("Formato inválido");
+    mostrarPrecios(data);
+  })
+  .catch((err) => {
+    console.warn("Error API precios, usando fallback:", err);
+    const fallback = Object.entries(PRECIOS_DEFAULT).map(([Tipo, Precios]) => ({ Tipo, Precios }));
+    fallback.push({ Tipo: "Descuento", Precios: DESCUENTO_DEFAULT });
+    mostrarPrecios(fallback);
+  })
+  .finally(() => resolverPrecios());
+
+// ============================================================
+//  GALERÍAS + MODAL
+// ============================================================
+
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("modalImg");
+const cerrar = document.querySelector(".cerrar");
+const prevBtn = document.getElementById("prev");
+const nextBtn = document.getElementById("next");
+
+let currentIndex = 0;
+let imageArray = [];
+
+function arreglarUrlDrive(url) {
+  // Convierte URLs de Google Drive al formato que devuelve la imagen directamente
+  const match = url.match(/[?&]id=([\w-]+)/);
+  if (match) {
+    return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
   }
+  return url; // Si no es de Drive, la deja como está
 }
 
-function formatearPrecio(precio) {
-  return `${precio.toFixed(2).replace(".", ",")}€`;
+function crearImagen(url) {
+  const div = document.createElement("div");
+  div.className = "img";
+  const img = document.createElement("img");
+  img.src = arreglarUrlDrive(url);
+  img.alt = "";
+  div.appendChild(img);
+  return div;
 }
+
+async function cargarGalerias(data) {
+  const promises = [];
+
+  for (const [categoria, urls] of Object.entries(data)) {
+    // Normalizar clave para comparar sin importar mayúsculas/espacios
+    const clave = categoria.trim().toLowerCase();
+    const containerId = GALERIA_MAP[clave];
+
+    if (!containerId) {
+      console.warn(`Categoría no reconocida en GALERIA_MAP: "${categoria}"`);
+      continue;
+    }
+
+    const container = document.getElementById(containerId);
+    if (!container) continue;
+
+    container.innerHTML = "";
+
+    if (!urls || urls.length === 0) {
+      const p = document.createElement("p");
+      p.textContent = "No hay imágenes disponibles.";
+      container.appendChild(p);
+      continue;
+    }
+
+    urls.forEach((url) => {
+      const divImg = crearImagen(url);
+      container.appendChild(divImg);
+      const img = divImg.querySelector("img");
+      promises.push(new Promise((resolve) => { img.onload = img.onerror = resolve; }));
+    });
+  }
+
+  await Promise.all(promises);
+  actualizarArrayModal();
+}
+
+function actualizarArrayModal() {
+  const imgs = document.querySelectorAll(".galeriaContainer .img img");
+  imageArray = Array.from(imgs);
+
+  imageArray.forEach((img, index) => {
+    img.onclick = () => {
+      if (!modal) return;
+      modal.style.display = "block";
+      currentIndex = index;
+      updateModal();
+    };
+  });
+
+  updateModal();
+}
+
+function updateModal() {
+  if (!modal || !modalImg || imageArray.length === 0) return;
+  modalImg.src = imageArray[currentIndex].src;
+  if (prevBtn) prevBtn.style.visibility = currentIndex === 0 ? "hidden" : "visible";
+  if (nextBtn) nextBtn.style.visibility = currentIndex === imageArray.length - 1 ? "hidden" : "visible";
+}
+
+if (cerrar) cerrar.addEventListener("click", () => { if (modal) modal.style.display = "none"; });
+if (prevBtn) prevBtn.addEventListener("click", () => { if (currentIndex > 0) { currentIndex--; updateModal(); } });
+if (nextBtn) nextBtn.addEventListener("click", () => { if (currentIndex < imageArray.length - 1) { currentIndex++; updateModal(); } });
+if (modal) modal.addEventListener("click", (e) => { if (e.target === modal) modal.style.display = "none"; });
+
+fetch(API_GALERIAS)
+  .then((res) => res.json())
+  .then((data) => cargarGalerias(data))
+  .catch((err) => console.error("Error al cargar imágenes:", err))
+  .finally(() => resolverGalerias());
+
+// ============================================================
+//  NAVEGACIÓN
+// ============================================================
 
 function irAPrecios() {
   const seccion = document.getElementById("seccionPrecios");
-  if (seccion) {
-    seccion.scrollIntoView({ behavior: "smooth" });
-  }
+  if (seccion) seccion.scrollIntoView({ behavior: "smooth" });
 }
