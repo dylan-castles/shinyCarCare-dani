@@ -265,10 +265,10 @@ let currentIndex = 0;
 let imageArray = [];
 
 function arreglarUrlDrive(url) {
-  // Convierte URLs de Google Drive al formato que devuelve la imagen directamente
+  // Convierte URLs de Google Drive al formato público compatible con móvil
   const match = url.match(/[?&]id=([\w-]+)/);
   if (match) {
-    return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
+    return `https://lh3.googleusercontent.com/d/${match[1]}`;
   }
   return url; // Si no es de Drive, la deja como está
 }

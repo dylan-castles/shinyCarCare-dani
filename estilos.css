@@ -820,7 +820,6 @@ hr.gradienteCentro {
   aspect-ratio: 1 / 1; /* hace que todas sean cuadradas */
   overflow: hidden; /* recorta la imagen que sobra */
   border-radius: 5px; /* opcional: bordes redondeados */
-  background-color: #f3f3f3;
 }
 
 .galeriaContainer .img img {
