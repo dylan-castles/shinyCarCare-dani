@@ -264,27 +264,13 @@ const nextBtn = document.getElementById("next");
 let currentIndex = 0;
 let imageArray = [];
 
-function extraerIdDrive(url) {
-  const match = url.match(/[?&]id=([\w-]+)/);
-  return match ? match[1] : null;
-}
-
-// Intenta thumbnail primero (mejor calidad, funciona en escritorio),
-// si falla prueba con lh3 (más compatible en móvil).
 function crearImagen(url, onReady) {
   const div = document.createElement("div");
   div.className = "img";
   const img = document.createElement("img");
   img.alt = "";
-
-  const id = extraerIdDrive(url);
-  if (id) {
-    img.src = `https://lh3.googleusercontent.com/d/${id}`;
-  } else {
-    img.src = url;
-  }
+  img.src = url; // URL ya correcta desde el servidor
   img.onload = img.onerror = () => { if (onReady) onReady(); };
-
   div.appendChild(img);
   return div;
 }
