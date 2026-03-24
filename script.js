@@ -16,7 +16,7 @@ const DESCUENTO_DEFAULT = 0;
 const API_PRECIOS =
   "https://script.google.com/macros/s/AKfycbzKbrHdjmGKwL42o-GfndjHsrNOT0LR_eST00c5jM9v4TISRonEiP3CRa9asdIt17YoZA/exec";
 const API_GALERIAS =
-  "https://script.google.com/macros/s/AKfycbxrUuhrUCEUfMZEQrdwBSSBp_dhf1OHUG22dQcpNZomMRsozsi2kCkkbM_4kl_1zLc/exec";
+  "https://script.google.com/macros/s/AKfycbyJ33xlj6wtKHejUP4KHsFUOziL4rTGcyR_AlsPTJhrXUf7OJ4L7y0D91t3Qxxjtjnk/exec";
 
 const GALERIA_MAP = {
   "limpieza exterior": "galeriaLimpiezaExteriorContainer",
