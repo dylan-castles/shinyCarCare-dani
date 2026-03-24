@@ -339,14 +339,17 @@ nav ul li a:hover {
 }
 #seccionPrecios {
     width: 100%;
-    height: 200px;
     background-color: black;
     flex-shrink: 0;
     position: relative;
     top: -10px;
+    padding-bottom: 50px;
 }
 #seccionPrecios h1 {
     margin: 0;
+    margin-left: 15%;
+    margin-bottom: 50px;
+    font-size: 50px;
 }
 #seccionGaleria {
     width: 100%;
@@ -408,6 +411,7 @@ nav ul li a:hover {
     flex-direction: column;
     gap: 20px;
     align-items: center;
+    justify-content: center;
 }
 .servicio {
     background-color: #dedede;
@@ -418,6 +422,7 @@ nav ul li a:hover {
     border-radius: 30px;
     z-index: 1;
     border: 2px solid var(--color-secundario);
+    box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.5);
 }
 .servicio p{
     color: black;
@@ -427,9 +432,346 @@ nav ul li a:hover {
     vertical-align: middle;
     display: flex;
     align-items: center;
+    margin-bottom: 0;
 }
 .servicio img{
   transition: opacity 1s ease;
+}
+
+.serviceTags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 10px;
+    justify-content: center;
+    margin-top: 0;
+}
+
+.serviceTags span {
+    background-color: var(--color-secundario);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+.btnLargoServicios{
+    background-color: var(--color-primario);
+    color: white;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 15px;
+    font-size: larger;
+    cursor: pointer;
+    font-weight: 200;
+    font-family: 'Racing Sans One', sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.btnLargoServicios:hover {
+    background-color: #0a1f46;
+    color: rgb(221, 221, 221);
+}
+#preciosContainer {
+    display: flex;
+    gap: 20px;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+.packServicio{
+    width: 20%;
+    background-color: none;
+    border-radius: 15px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding-top: 40px;
+}
+#packBasico {
+    border: 1px solid var(--color-primario);
+    height: auto;
+}
+#packPremium {
+    border: 1px solid #C59038;
+    height: auto;
+}
+#packFullDetailing {
+    border: 1px solid var(--color-primario);
+    height: auto;
+}
+#packExtras {
+    border: 1px solid #6d91d5;
+    height: auto;
+}
+.packServicio h3 {
+    color: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 30px;
+    font-weight: 200;
+    position: absolute;
+    top: 0; 
+    left: 50%;
+    transform: translate(-50%, -50%); /* -50% X centra horizontalmente, -50% Y lo sube la mitad */
+    width: max-content;
+    margin: 0%;
+}
+#packBasico h3 {
+    background-color: var(--color-primario);
+}
+#packPremium h3 {
+    background-color: #C59038;
+}
+#packFullDetailing h3 {
+    background-color: var(--color-primario);
+}
+#packExtras h3 {
+    background-color: #6d91d5;
+}
+
+hr.gradienteCentro {
+    border: 0;
+    height: 2px;
+    width: 95%;
+    border-radius: 2px;
+    margin: 5px auto;
+}
+
+#packBasico hr.gradienteCentro, #packFullDetailing hr.gradienteCentro {
+        background: linear-gradient(
+        to right,
+        transparent 0%,
+        var(--color-primario) 35%,
+        #ffffff 50%,
+        var(--color-primario) 65%,
+        transparent 100%
+    );
+}
+
+#packPremium hr.gradienteCentro {
+        background: linear-gradient(
+        to right,
+        transparent 0%,
+        #C59038 35%,
+        #ffffff 50%,
+        #C59038 65%,
+        transparent 100%
+    );
+}
+
+#packExtras hr.gradienteCentro {
+        background: linear-gradient(
+        to right,
+        transparent 0%,
+        #6d91d5 35%,
+        #ffffff 50%,
+        #6d91d5 65%,
+        transparent 100%
+    );
+}
+
+#packBasico .precioPack, #packFullDetailing .precioPack {
+    font-size: 60px;
+    font-weight: bold;
+    color: #6d91d5;
+    margin: 0;
+}
+
+#packPremium .precioPack {
+    font-size: 60px;
+    font-weight: bold;
+    color: #c19f69;
+    margin: 0;
+}
+#packExtras .precioPack{
+    font-size: 60px;
+    font-weight: bold;
+    color: #94b1e6;
+    margin: 0;
+}
+.preciosPack{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+.precioAntiguo{
+    font-size: 30px;
+    color: #c4c4c4;
+    text-decoration: line-through;
+    text-decoration-color: #A6131C;
+    margin: 0;
+}
+.contenidoPack {
+    flex: 1;
+    align-content: center;
+}
+.contenidoPack p{
+    font-size: 25px;
+    margin: 20px;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    font-family: "Saira", sans-serif;
+    color: white;
+}
+.contenidoPack i{
+    color: #6d91d5;
+    margin-right: 10px;
+}
+#packPremium .contenidoPack i{
+    color: #c19f69;
+    margin-right: 10px;
+}
+#packExtras .contenidoPack i{
+    color: #6d91d5;
+    margin-right: 10px;
+}
+.textoCentradoPack{
+    text-align: center;
+    font-size: 30px !important;
+    font-weight: bold;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+.textoAzulFlojo{
+    color: #6d91d5 !important;
+    text-align: center;
+    font-size: 45px !important;
+    font-weight: bold;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+.dividerPack {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* espacio entre línea y + */
+}
+
+.dividerPack .lineaPack {
+    flex: 1; /* ocupa el espacio sobrante a ambos lados */
+    height: 1px;
+    border-radius: 1px;
+}
+
+.dividerPack .iconoPack {
+    font-size: 45px;
+    font-weight: bold;
+    color: #1F95D3;
+}
+
+.lineaPack1 {
+    background: linear-gradient(
+        to right,
+        transparent 0%,
+        #b6b6b6 40%,
+        #b6b6b6 100%
+    );
+}
+.lineaPack2 {
+    background: linear-gradient(
+        to right,
+        #b6b6b6 0%,
+        #b6b6b6 60%,
+        transparent 100%
+    );
+}
+.contenidoPack p span {
+    font-size: 30px;
+    font-weight: bold;
+    color: #6d91d5;
+    margin: 0;
+    margin-left: 5px;
+    font-family: 'Racing Sans One', sans-serif;
+}
+
+#badgeOferta {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  z-index: 9999;
+  text-align: center;
+  animation: vibrarPausado 4s infinite;
+  transition: color 0.3s ease;
+}
+
+#badgeOferta i {
+  font-size: 80px;
+  color: #ff0000;
+  text-shadow: 0 0 10px rgba(0,0,0,0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 80px;
+}
+
+#badgeOferta span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Racing Sans One', sans-serif;
+  font-size: 20px;
+  color: white;
+  text-shadow: 2px 2px 4px black;
+}
+
+#badgeOferta:hover i {
+  color: white;
+  -webkit-text-stroke: 1px red;
+}
+
+#badgeOferta:hover span {
+  color: red;
+  text-shadow: none;
+}
+
+@keyframes vibrarPausado {
+  0%   { transform: rotate(0deg); }
+  5%   { transform: rotate(-20deg); }
+  10%  { transform: rotate(0deg); }
+  15%  { transform: rotate(-20deg); }
+  20%  { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+#badgeOferta {
+  animation: vibrarPausado 4s infinite; /* 4s = 2 spins + 2s de pausa */
+}
+
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white; /* fondo mientras carga */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid var(--color-primario); /* azul */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* Responsive */
@@ -452,6 +794,40 @@ nav ul li a:hover {
     #serviciosContainer img{
         width: 300px;
     }
+    /* DE DOS EN DOS */
+    #preciosContainer {
+        justify-content: center;
+        padding: 20px;
+    }
+     .packServicio {
+        width: 45%;
+        margin-top: 20px;
+    }
+    .btnLargoServicios{
+        font-size: 15px;
+    }
+    #seccionPrecios h1 {
+        font-size: 40px;
+    }
+    .packServicio h3 {
+        font-size: 25px;
+    }
+    .precioPack {
+        font-size: 40px !important;
+    }
+    .precioAntiguo {
+        font-size: 20px;
+    }
+    .contenidoPack p {
+        font-size: 15px;
+    }
+    .textoCentradoPack {
+        font-size: 20px !important;
+    }
+     .textoAzulFlojo {
+        font-size: 30px !important;
+    }
+
 }
 @media (max-width: 1050px) {
     #linksNav {
@@ -482,18 +858,26 @@ nav ul li a:hover {
     #textoPrincipal h3 {
         font-size: 15px;
     }
-    #servicioInterior p {
+    #servicioInterior .order2 {
     order: 2; /* ahora aparece después */
     }
-    #servicioInterior .verticalContent {
+    #servicioInterior .order1 {
         order: 1; /* ahora aparece primero */
     }
     .servicio{
         flex-direction: column !important;
         align-items: center !important;
     }
-        #serviciosContainer img{
+    #serviciosContainer img{
         width: 300px;
+    }
+
+    .packServicio {
+        width: 100%;
+    }
+    #preciosContainer {
+        justify-content: center;
+        padding: 10px;
     }
 }
 @media (max-width: 600px) {
@@ -555,4 +939,12 @@ nav ul li a:hover {
         padding: 8px 16px;
         font-size: small;
     }
+    .btnLargoServicios{
+        font-size: 12px;
+    }
+    #seccionPrecios h1 {
+        font-size: 25px;
+    }
 }
+
+

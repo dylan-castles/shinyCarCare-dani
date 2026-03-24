@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="hero-container">
@@ -38,7 +39,7 @@
         </header>
         <div id="contenedorPrincipal">
             <div id="textoPrincipal">
-                <p id="textoDiferente"><span class="colorText2" style="font-size: larger; font-weight: bolder;"><i class="fa-solid fa-minus"></i> </span>WE WASH, YOU SHINE</p>
+                <p id="textoDiferente"><span class="colorText2" style="font-size: larger; font-weight: bolder;"><i class="fa-solid fa-minus"></i> </span>TU COCHE LIMPIO, TU DIA BRILLANTE</p>
                 <h1>¡Dale a tu coche el cuidado que se merece!</h1>
                 <p class="descripcion">En <span class="boldText">Shiny <span class="colorText">Car</span> Care</span>, ofrecemos servicios de limpieza y detailing desde opciones básicas hasta tratamientos premium, tanto para el interior como para el exterior del vehículo. Cuidamos cada coche con atención al detalle para que luzca siempre impecable.</p>
                 <button id="btnServicios" class="btnRojo" onclick="window.location.href='#seccionServicios'">Ver Servicios</button>
@@ -72,11 +73,32 @@
                     <h3>Limpieza Exterior</h3>
                     <img id="servicioImgExterior" src="./img/capoAvsD.png" alt="Servicio de limpieza exterior">
                 </div>
-                <p>"Ofrecemos un servicio completo de limpieza exterior para tu vehículo, eliminando suciedad, polvo, barro e insectos acumulados en la carrocería."</p>
+                <div class="verticalContent">
+                    <p>
+                        "Cuidamos y mantenemos el exterior de tu vehículo limpio y brillante, mejorando su apariencia y protección."
+                    </p>
+                    <div class="serviceTags">
+                        <span>Lavado exterior</span>
+                        <span>Cera</span>
+                        <span>Pulido llantas</span>
+                    </div>
+                    <button class="btnLargoServicios" onclick="window.location.href='#seccionPrecios'">VER EJEMPLOS</button>
+                </div>
             </div>
             <div class="servicio" id="servicioInterior">
-                <p>"Limpiamos a fondo el interior del vehículo, incluyendo asientos, alfombrillas, paneles y ventanas para un ambiente fresco y limpio."</p>
-                <div class="verticalContent">
+                <div class="verticalContent order2">
+                    <p>
+                        "Mantenemos el interior del vehículo limpio, fresco y en condiciones óptimas para tu comodidad."
+                    </p>
+                    <div class="serviceTags">
+                        <span>Aspirado interior</span>
+                        <span>Limpieza alfombrillas</span>
+                        <span>Limpieza plásticos</span>
+                        <span>Limpieza asientos</span>
+                    </div>
+                    <button class="btnLargoServicios" onclick="window.location.href='#seccionPrecios'">VER EJEMPLOS</button>
+                </div>
+                <div class="verticalContent order1">
                     <h3>Limpieza Interior</h3>
                     <img id="servicioImgInterior" src="./img/asientosAvsD.png" alt="Servicio de limpieza interior">
                 </div>
@@ -86,19 +108,95 @@
                     <h3>Detailing</h3>
                     <img id="servicioImgDetailing" src="./img/polishAvsD.png" alt="Servicio de detailing">
                 </div>
-                <p>"Un servicio completo que incluye limpieza, pulido y protección para mantener tu coche en condiciones óptimas."</p>
+                <div class="verticalContent">
+                    <p>
+                        "Ofrecemos un cuidado integral del vehículo, manteniendo su limpieza, brillo y protección a largo plazo."
+                    </p>
+                    <div class="serviceTags">
+                        <span>Limpieza tapicerías</span>
+                        <span>Pulido de faros</span>
+                        <span>Tratamiento hidrofóbico</span>
+                    </div>
+                    <button class="btnLargoServicios" onclick="window.location.href='#seccionPrecios'">VER EJEMPLOS</button>
+                </div>
             </div>
         </div>
     </div>
     <img id="dividerCarSiluette" src="./img/carSiluette.svg" alt="Silueta coche">
     <div id="seccionPrecios">
-        <h1>Precios</h1>
+        <h1>Precios:</h1>
+        <div id="preciosContainer">
+            <div class="packServicio" id="packBasico">
+                <h3>PACK BÁSICO</h3>
+                <hr class="gradienteCentro">
+                <div class="preciosPack">
+                    <p class="precioAntiguo">--€</p>
+                    <p class="precioPack" id="precioBasico">--€</p>
+                </div>
+                <hr class="gradienteCentro">
+                <div class="contenidoPack"> 
+                    <p><i class="fa-solid fa-check"></i>Lavado exterior</p>
+                    <p><i class="fa-solid fa-check"></i>Aspirado interior</p>
+                    <p><i class="fa-solid fa-check"></i>Limpieza alfombrillas</p>
+                </div>
+            </div>
+            <div class="packServicio" id="packPremium">
+                <h3>PACK PREMIUM</h3>
+                <hr class="gradienteCentro">
+                <div class="preciosPack">
+                    <p class="precioAntiguo">--€</p>
+                    <p class="precioPack" id="precioPremium">--€</p>
+                </div>
+                <hr class="gradienteCentro">
+                <div class="contenidoPack"> 
+                    <p><i class="fa-solid fa-check"></i>Lavado exterior + cera</p>
+                    <p><i class="fa-solid fa-check"></i>Aspirado + plásticos</p>
+                    <p><i class="fa-solid fa-check"></i>Limpieza asientos</p>
+                    <p><i class="fa-solid fa-check"></i>Pulido de llantas</p>
+                </div>
+            </div>
+            <div class="packServicio" id="packFullDetailing">
+                <h3>PACK FULL DETAILING</h3>
+                <hr class="gradienteCentro">
+                <div class="preciosPack">
+                    <p class="precioAntiguo">--€</p>
+                    <p class="precioPack" id="precioFull">--€</p>
+                </div>
+                <hr class="gradienteCentro">
+                <div class="contenidoPack"> 
+                    <p class="textoCentradoPack">TODO LO DEL PREMIUM</p>
+                    <div class="dividerPack">
+                        <span class="lineaPack lineaPack1"></span>
+                        <span class="iconoPack">+</span>
+                        <span class="lineaPack lineaPack2"></span>
+                    </div>
+                    <p><i class="fa-solid fa-check"></i>Limpieza profunda tapicerías</p>
+                    <p><i class="fa-solid fa-check"></i>Pulido y protección de faros</p>
+                    <p><i class="fa-solid fa-check"></i>Tratamiento hidrofóbico</p>
+                </div>
+            </div>
+            <div class="packServicio" id="packExtras">
+                <h3>EXTRAS</h3>
+                <div class="contenidoPack"> 
+                    <p><i class="fa-solid fa-check"></i>Pulido de faros <span id="precioFaros">--€</span></p>
+                    <p><i class="fa-solid fa-check"></i>Protección hidrofóbica <span id="precioHidrofobico">--€</span></p>
+                    <p><i class="fa-solid fa-check"></i>Limpieza tapicerías <span id="precioTapiceria">--€</span></p>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="seccionContacto">
         <h1>Contacto</h1>
     </div>
     <div id="seccionGaleria">
         <h1>Galería</h1>
+    </div>
+    <div id="badgeOferta" onclick="irAPrecios()">
+        <i class="fa-solid fa-certificate"></i>
+        <span id="textoOferta">-15%</span>
+    </div>
+    <div id="loader">
+        <div class="spinner"></div>
     </div>
     <script src="script.js"></script>
 </body>

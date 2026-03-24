@@ -1,3 +1,19 @@
+const loader = document.getElementById("loader");
+if (loader) loader.style.display = "flex"; // mostrar al iniciar
+
+// ------- Precios predefinidos (antes de fetch) -------
+const PRECIOS_DEFAULT = {
+  "pack básico": 30,
+  "pack premium": 50,
+  "pack full": 80,
+  "pulido faros": 25,
+  "protección hidrofóbica": 20,
+  "limpieza tapicerías": 30
+};
+const DESCUENTO_DEFAULT = 0;
+// -------------------------------------
+
+
 const frameCount = 151; // total de frames
 const img = document.getElementById("fotoAnimacion");
 let currentFrame = 1;
@@ -139,3 +155,107 @@ setInterval(() => {
     estadoServicios = !estadoServicios;
 
 }, 5000);
+
+const URL = "https://script.google.com/macros/s/AKfycbzKbrHdjmGKwL42o-GfndjHsrNOT0LR_eST00c5jM9v4TISRonEiP3CRa9asdIt17YoZA/exec";
+
+fetch(URL)
+  .then(response => response.json())
+  .then(data => {
+    if (!Array.isArray(data)) {
+      throw new Error("Formato inválido");
+    }
+    mostrarPrecios(data);
+    if (loader) loader.style.display = "none"; // ocultar loader al cargar
+  })
+  .catch(error => {
+    console.error("Error API, usando fallback:", error);
+    const dataFallback = Object.entries(PRECIOS_DEFAULT).map(([tipo, precio]) => ({
+      Tipo: tipo,
+      Precios: precio
+    }));
+    dataFallback.push({
+      Tipo: "Descuento",
+      Precios: DESCUENTO_DEFAULT
+    });
+    mostrarPrecios(dataFallback);
+    if (loader) loader.style.display = "none"; // ocultar loader aunque falle
+  });
+
+function mostrarPrecios(data) {
+  let precios = {};
+  let descuento = 0;
+
+  // 🔹 1. Guardamos todo en un objeto limpio
+  data.forEach(item => {
+    const tipo = item.Tipo.trim().toLowerCase(); 
+    const precio = item.Precios;
+
+    if (tipo === "descuento") {
+      // Si la API devuelve 15 en lugar de 0.15, convertir a decimal
+      descuento = precio > 1 ? precio / 100 : precio;
+    } else {
+      precios[tipo] = precio;
+    }
+  });
+
+  // 🔹 2. Actualizar badge de oferta
+  const badge = document.getElementById("textoOferta");
+  if (badge) {
+    if (descuento > 0) {
+      const porcentaje = Math.round(descuento * 100);
+      badge.textContent = `-${porcentaje}%`;
+    } else {
+      badge.textContent = "OFERTA";
+    }
+  }
+
+  // 🔹 3. Función para aplicar descuento
+  function aplicarDescuento(precio) {
+    return parseFloat((precio - precio * descuento).toFixed(2));
+  }
+
+  // 🔹 4. Función para actualizar precio con antiguo
+  function actualizarPrecio(id, precioOriginal) {
+    if (precioOriginal == null) return;
+    const contenedor = document.getElementById(id);
+    if (!contenedor) return;
+
+    const precioFinal = aplicarDescuento(precioOriginal);
+
+    const antiguo = contenedor.parentElement.querySelector(".precioAntiguo");
+    if (contenedor) contenedor.textContent = formatearPrecio(precioFinal);
+    if (antiguo) antiguo.textContent = formatearPrecio(precioOriginal);
+  }
+
+  // 🔹 5. Extras sin descuento
+  function actualizarSoloPrecio(id, precio) {
+    const el = document.getElementById(id);
+    if (el && precio != null) el.textContent = formatearPrecio(precio);
+  }
+
+  // 🔹 6. Pintar precios de packs
+  actualizarPrecio("precioBasico", precios["pack básico"]);
+  actualizarPrecio("precioPremium", precios["pack premium"]);
+  actualizarPrecio("precioFull", precios["pack full"]);
+
+  // 🔹 7. Extras
+  actualizarSoloPrecio("precioFaros", precios["pulido faros"]);
+  actualizarSoloPrecio("precioHidrofobico", precios["protección hidrofóbica"]);
+  actualizarSoloPrecio("precioTapiceria", precios["limpieza tapicerías"]);
+
+  // 🔹 8. Formatear precio
+  function formatearPrecio(precio) {
+    return `${precio.toFixed(2).replace(".", ",")}€`;
+  }
+}
+
+function formatearPrecio(precio) {
+  return `${precio.toFixed(2).replace(".", ",")}€`;
+}
+
+function irAPrecios() {
+  const seccion = document.getElementById("seccionPrecios");
+  if (seccion) {
+    seccion.scrollIntoView({ behavior: "smooth" });
+  }
+}
