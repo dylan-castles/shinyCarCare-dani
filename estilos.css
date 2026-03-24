@@ -908,6 +908,40 @@ hr.gradienteCentro {
   color: var(--color-primario);
 }
 
+/* Placeholder mientras carga la imagen */
+.galeriaContainer .img-loading {
+  background-color: #1a1a1a;
+  position: relative;
+}
+
+.galeriaContainer .img-loading::after {
+  content: "\f03e"; /* icono de imagen de Font Awesome */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 40px;
+  color: #444;
+}
+
+.galeriaContainer .img-loading img {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.galeriaContainer .img:not(.img-loading) img {
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+/* Si la imagen falla */
+.galeriaContainer .img-error::after {
+  content: "\f071";
+  color: #A6131C;
+}
+
 /* Responsive */
 @media (max-width: 1440px) {
     #textoPrincipal h1 {

@@ -50,7 +50,7 @@ let resolverPrecios, resolverGalerias;
 const promesaPrecios = new Promise((res) => (resolverPrecios = res));
 const promesaGalerias = new Promise((res) => (resolverGalerias = res));
 
-Promise.all([promesaPrecios, promesaGalerias]).then(() => setLoader(false));
+promesaPrecios.then(() => setLoader(false));
 
 // ============================================================
 //  ANIMACIÓN DE FRAMES (scroll) — sin modificar
@@ -266,11 +266,19 @@ let imageArray = [];
 
 function crearImagen(url, onReady) {
   const div = document.createElement("div");
-  div.className = "img";
+  div.className = "img img-loading";
   const img = document.createElement("img");
   img.alt = "";
-  img.src = url; // URL ya correcta desde el servidor
-  img.onload = img.onerror = () => { if (onReady) onReady(); };
+  img.onload = () => {
+    div.classList.remove("img-loading");
+    if (onReady) onReady();
+  };
+  img.onerror = () => {
+    div.classList.remove("img-loading");
+    div.classList.add("img-error");
+    if (onReady) onReady();
+  };
+  img.src = url;
   div.appendChild(img);
   return div;
 }
