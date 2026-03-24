@@ -192,7 +192,7 @@ const intervaloServicios = setInterval(() => {
 function mostrarPrecios(data) {
   const precios = {};
   let descuento = 0;
-
+ 
   data.forEach((item) => {
     const tipo = item.Tipo.trim().toLowerCase();
     const precio = item.Precios;
@@ -202,17 +202,23 @@ function mostrarPrecios(data) {
       precios[tipo] = precio;
     }
   });
-
-  // Badge de oferta
-  const badge = document.getElementById("textoOferta");
-  if (badge) {
-    badge.textContent = descuento > 0 ? `-${Math.round(descuento * 100)}%` : "OFERTA";
-  }
-
+ 
+  // Badge de oferta y precios antiguos
+  const badge = document.getElementById("badgeOferta");
+  if (badge) badge.style.display = descuento > 0 ? "block" : "none";
+ 
+  const textoOferta = document.getElementById("textoOferta");
+  if (textoOferta) textoOferta.textContent = `-${Math.round(descuento * 100)}%`;
+ 
+  // Mostrar u ocultar precios antiguos según haya descuento
+  document.querySelectorAll(".precioAntiguo").forEach(el => {
+    el.style.display = descuento > 0 ? "block" : "none";
+  });
+ 
   function aplicarDescuento(precio) {
     return parseFloat((precio - precio * descuento).toFixed(2));
   }
-
+ 
   function actualizarPrecio(id, precioOriginal) {
     if (precioOriginal == null) return;
     const contenedor = document.getElementById(id);
@@ -222,16 +228,16 @@ function mostrarPrecios(data) {
     contenedor.textContent = formatearPrecio(precioFinal);
     if (antiguo) antiguo.textContent = formatearPrecio(precioOriginal);
   }
-
+ 
   function actualizarSoloPrecio(id, precio) {
     const el = document.getElementById(id);
     if (el && precio != null) el.textContent = formatearPrecio(precio);
   }
-
+ 
   actualizarPrecio("precioBasico", precios["pack básico"]);
   actualizarPrecio("precioPremium", precios["pack premium"]);
   actualizarPrecio("precioFull", precios["pack full"]);
-
+ 
   actualizarSoloPrecio("precioFaros", precios["pulido faros"]);
   actualizarSoloPrecio("precioHidrofobico", precios["protección hidrofóbica"]);
   actualizarSoloPrecio("precioTapiceria", precios["limpieza tapicerías"]);
