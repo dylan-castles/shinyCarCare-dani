@@ -221,6 +221,9 @@ nav ul li a:hover {
     background-color: white;
     color: var(--color-primario);
 }
+.textoRojo {
+    color: #ff1e2d !important;
+}
 #textoSucio{
     margin-top: 40%;
 }
@@ -943,6 +946,24 @@ hr.gradienteCentro {
 .galeriaContainer .img-error::after {
   content: "\f071";
   color: #A6131C;
+}
+
+.btnReservar{
+    background-color: #ff1e2d;
+    color: white;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: larger;
+    cursor: pointer;
+    font-weight: 200;
+    font-family: 'Racing Sans One', sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+    width: fit-content;
+}
+.btnReservar:hover {
+    background-color: white;
+    color: #ff1e2d;
 }
 
 /* Responsive */
