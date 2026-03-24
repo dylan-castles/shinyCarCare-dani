@@ -975,6 +975,7 @@ hr.gradienteCentro {
     #preciosContainer {
         justify-content: center;
         padding: 20px;
+        gap: 70px;
     }
      .packServicio {
         width: 45%;
