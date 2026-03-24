@@ -833,7 +833,7 @@ hr.gradienteCentro {
   height: 100%;
   object-fit: cover; /* recorta y llena el contenedor cuadrado */
   object-position: center; /* centra la imagen, mantiene el “medio” visible */
-  transition: transform 0.3s ease; /* transición suave para el zoom */
+  transition: transform 0.3s ease !important; /* transición suave para el zoom */
 }
 
 .galeriaContainer .img img:hover {
