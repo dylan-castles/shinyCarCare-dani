@@ -485,6 +485,7 @@ nav ul li a:hover {
     align-items: center;
     position: relative;
     padding-top: 40px;
+    box-shadow: 0 0 20px 20px #133d8a7e;
 }
 #packBasico {
     border: 1px solid var(--color-primario);
@@ -493,6 +494,7 @@ nav ul li a:hover {
 #packPremium {
     border: 1px solid #C59038;
     height: auto;
+    box-shadow: 0 0 20px 20px #c58f3885 !important;
 }
 #packFullDetailing {
     border: 1px solid var(--color-primario);
@@ -501,6 +503,7 @@ nav ul li a:hover {
 #packExtras {
     border: 1px solid #6d91d5;
     height: auto;
+    box-shadow: 0 0 20px 20px #6d91d582 !important;
 }
 .packServicio h3 {
     color: white;
