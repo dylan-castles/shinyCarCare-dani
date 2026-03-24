@@ -264,21 +264,32 @@ const nextBtn = document.getElementById("next");
 let currentIndex = 0;
 let imageArray = [];
 
-function arreglarUrlDrive(url) {
-  // Convierte URLs de Google Drive al formato público compatible con móvil
+function extraerIdDrive(url) {
   const match = url.match(/[?&]id=([\w-]+)/);
-  if (match) {
-    return `https://lh3.googleusercontent.com/d/${match[1]}`;
-  }
-  return url; // Si no es de Drive, la deja como está
+  return match ? match[1] : null;
 }
 
-function crearImagen(url) {
+// Intenta thumbnail primero (mejor calidad, funciona en escritorio),
+// si falla prueba con lh3 (más compatible en móvil).
+function crearImagen(url, onReady) {
   const div = document.createElement("div");
   div.className = "img";
   const img = document.createElement("img");
-  img.src = arreglarUrlDrive(url);
   img.alt = "";
+
+  const id = extraerIdDrive(url);
+  if (id) {
+    img.src = `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
+    img.onerror = () => {
+      img.onerror = () => { if (onReady) onReady(); }; // 2º fallo → resuelve igual
+      img.src = `https://lh3.googleusercontent.com/d/${id}=w800`;
+    };
+    img.onload = () => { if (onReady) onReady(); };
+  } else {
+    img.src = url;
+    img.onload = img.onerror = () => { if (onReady) onReady(); };
+  }
+
   div.appendChild(img);
   return div;
 }
@@ -309,10 +320,10 @@ async function cargarGalerias(data) {
     }
 
     urls.forEach((url) => {
-      const divImg = crearImagen(url);
-      container.appendChild(divImg);
-      const img = divImg.querySelector("img");
-      promises.push(new Promise((resolve) => { img.onload = img.onerror = resolve; }));
+      promises.push(new Promise((resolve) => {
+        const divImg = crearImagen(url, resolve);
+        container.appendChild(divImg);
+      }));
     });
   }
 
