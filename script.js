@@ -16,7 +16,7 @@ const DESCUENTO_DEFAULT = 0;
 const API_PRECIOS =
   "https://script.google.com/macros/s/AKfycbzKbrHdjmGKwL42o-GfndjHsrNOT0LR_eST00c5jM9v4TISRonEiP3CRa9asdIt17YoZA/exec";
 const API_GALERIAS =
-  "https://script.google.com/macros/s/AKfycbyJ33xlj6wtKHejUP4KHsFUOziL4rTGcyR_AlsPTJhrXUf7OJ4L7y0D91t3Qxxjtjnk/exec";
+  "https://script.google.com/macros/s/AKfycby8YuzletFhba2HcsMnrDxCuCzrN5S8_V_liAyE2JrIA6hJsD4-DSzirkWGvZZuEs8j/exec";
 
 const GALERIA_MAP = {
   "limpieza exterior": "galeriaLimpiezaExteriorContainer",
@@ -270,22 +270,41 @@ const nextBtn = document.getElementById("next");
 let currentIndex = 0;
 let imageArray = [];
 
-function crearImagen(url, onReady) {
+function crearMedia(item, onReady) {
   const div = document.createElement("div");
   div.className = "img img-loading";
-  const img = document.createElement("img");
-  img.alt = "";
-  img.onload = () => {
-    div.classList.remove("img-loading");
-    if (onReady) onReady();
-  };
-  img.onerror = () => {
-    div.classList.remove("img-loading");
-    div.classList.add("img-error");
-    if (onReady) onReady();
-  };
-  img.src = url;
-  div.appendChild(img);
+
+  if (item.type === "video") {
+    const iframe = document.createElement("iframe");
+    iframe.src = item.url;
+    iframe.allow = "autoplay";
+    iframe.allowFullscreen = true;
+    iframe.onload = () => {
+      div.classList.remove("img-loading");
+      if (onReady) onReady();
+    };
+
+    div.appendChild(iframe);
+  } else {
+    const img = document.createElement("img");
+    img.loading = "lazy";
+    img.alt = "";
+
+    img.onload = () => {
+      div.classList.remove("img-loading");
+      if (onReady) onReady();
+    };
+
+    img.onerror = () => {
+      div.classList.remove("img-loading");
+      div.classList.add("img-error");
+      if (onReady) onReady();
+    };
+
+    img.src = item.url;
+    div.appendChild(img);
+  }
+
   return div;
 }
 
@@ -314,9 +333,11 @@ async function cargarGalerias(data) {
       continue;
     }
 
-    urls.forEach((url) => {
+    urls.forEach((item) => {
+      if (!item || !item.url) return;
+
       promises.push(new Promise((resolve) => {
-        const divImg = crearImagen(url, resolve);
+        const divImg = crearMedia(item, resolve);
         container.appendChild(divImg);
       }));
     });
@@ -326,27 +347,64 @@ async function cargarGalerias(data) {
   actualizarArrayModal();
 }
 
+let mediaArray = [];
+
 function actualizarArrayModal() {
-  const imgs = document.querySelectorAll(".galeriaContainer .img img");
-  imageArray = Array.from(imgs);
+  const items = document.querySelectorAll(".galeriaContainer .img");
 
-  imageArray.forEach((img, index) => {
-    img.onclick = () => {
-      if (!modal) return;
-      modal.style.display = "block";
-      currentIndex = index;
-      updateModal();
-    };
+  mediaArray = [];
+
+  items.forEach((div, index) => {
+    const img = div.querySelector("img");
+    const iframe = div.querySelector("iframe");
+
+    if (img) {
+      mediaArray.push({ type: "image", src: img.src });
+      img.onclick = () => abrirModal(index);
+    } else if (iframe) {
+      mediaArray.push({ type: "video", src: iframe.src });
+      div.onclick = () => abrirModal(index);
+    }
   });
+}
 
+function abrirModal(index) {
+  modal.style.display = "block";
+  currentIndex = index;
   updateModal();
 }
 
 function updateModal() {
-  if (!modal || !modalImg || imageArray.length === 0) return;
-  modalImg.src = imageArray[currentIndex].src;
-  if (prevBtn) prevBtn.style.visibility = currentIndex === 0 ? "hidden" : "visible";
-  if (nextBtn) nextBtn.style.visibility = currentIndex === imageArray.length - 1 ? "hidden" : "visible";
+  if (!modal || mediaArray.length === 0) return;
+
+  const item = mediaArray[currentIndex];
+
+  // Limpiar contenido anterior (clave para parar vídeos)
+  modalImg.style.display = "none";
+
+  let existingIframe = modal.querySelector("iframe");
+  if (existingIframe) existingIframe.remove();
+
+  if (item.type === "image") {
+    modalImg.src = item.src;
+    modalImg.style.display = "block";
+  } else {
+    const iframe = document.createElement("iframe");
+    iframe.src = item.src;
+    iframe.allow = "autoplay";
+    iframe.allowFullscreen = true;
+
+    iframe.style.maxWidth = "80%";
+    iframe.style.maxHeight = "80%";
+    iframe.style.display = "block";
+    iframe.style.margin = "auto";
+
+    modal.appendChild(iframe);
+  }
+
+  prevBtn.style.visibility = currentIndex === 0 ? "hidden" : "visible";
+  nextBtn.style.visibility =
+    currentIndex === mediaArray.length - 1 ? "hidden" : "visible";
 }
 
 if (cerrar) cerrar.addEventListener("click", () => { if (modal) modal.style.display = "none"; });
