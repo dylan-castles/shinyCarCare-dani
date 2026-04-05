@@ -268,7 +268,6 @@ const prevBtn = document.getElementById("prev");
 const nextBtn = document.getElementById("next");
 
 let currentIndex = 0;
-let imageArray = [];
 
 function crearMedia(item, onReady) {
   const div = document.createElement("div");
@@ -409,7 +408,7 @@ function updateModal() {
 
 if (cerrar) cerrar.addEventListener("click", () => { if (modal) modal.style.display = "none"; });
 if (prevBtn) prevBtn.addEventListener("click", () => { if (currentIndex > 0) { currentIndex--; updateModal(); } });
-if (nextBtn) nextBtn.addEventListener("click", () => { if (currentIndex < imageArray.length - 1) { currentIndex++; updateModal(); } });
+if (nextBtn) nextBtn.addEventListener("click", () => { if (currentIndex < mediaArray.length - 1) { currentIndex++; updateModal(); } });
 if (modal) modal.addEventListener("click", (e) => { if (e.target === modal) modal.style.display = "none"; });
 
 fetch(API_GALERIAS)
