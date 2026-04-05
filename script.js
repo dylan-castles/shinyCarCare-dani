@@ -353,15 +353,19 @@ function actualizarArrayModal() {
 
   mediaArray = [];
 
-  items.forEach((div, index) => {
+  items.forEach((div) => {
     const img = div.querySelector("img");
     const iframe = div.querySelector("iframe");
 
     if (img) {
+      const index = mediaArray.length; // ✅ índice real
       mediaArray.push({ type: "image", src: img.src });
+
       img.onclick = () => abrirModal(index);
     } else if (iframe) {
+      const index = mediaArray.length; // ✅ índice real
       mediaArray.push({ type: "video", src: iframe.src });
+
       div.onclick = () => abrirModal(index);
     }
   });
