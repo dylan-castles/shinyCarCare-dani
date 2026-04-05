@@ -118,21 +118,23 @@ let touchAccumulator = 0;
 
 const touchSensitivity = 0.2;
 
-window.addEventListener("touchstart", (e) => {
+const hero = document.getElementById("hero-container");
+
+hero.addEventListener("touchstart", (e) => {
     lastTouchY = e.touches[0].clientY;
     touchAccumulator = 0;
 });
 
-window.addEventListener("touchmove", (e) => {
+hero.addEventListener("touchmove", (e) => {
+    const heroRect = hero.getBoundingClientRect();
+
     const touchY = e.touches[0].clientY;
     let delta = lastTouchY - touchY;
 
     touchAccumulator += delta * touchSensitivity;
 
-    const hero = document.getElementById("hero-container");
-    const heroRect = hero.getBoundingClientRect();
-
     const frameThreshold = 1;
+
     while (touchAccumulator >= frameThreshold && currentFrame < frameCount && heroRect.bottom > 0) {
         e.preventDefault();
         currentFrame++;
