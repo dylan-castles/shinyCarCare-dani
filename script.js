@@ -128,6 +128,9 @@ hero.addEventListener("touchstart", (e) => {
 hero.addEventListener("touchmove", (e) => {
     const heroRect = hero.getBoundingClientRect();
 
+    // ✅ Solo interceptar si el hero está en pantalla
+    if (heroRect.bottom <= 0 || heroRect.top >= window.innerHeight) return;
+
     const touchY = e.touches[0].clientY;
     let delta = lastTouchY - touchY;
 
@@ -360,15 +363,26 @@ function actualizarArrayModal() {
     const iframe = div.querySelector("iframe");
 
     if (img) {
-      const index = mediaArray.length; // ✅ índice real
+      const index = mediaArray.length;
       mediaArray.push({ type: "image", src: img.src });
 
       img.onclick = () => abrirModal(index);
+      // ✅ Soporte táctil explícito
+      img.addEventListener("touchend", (e) => {
+        e.stopPropagation();
+        abrirModal(index);
+      }, { passive: true });
+
     } else if (iframe) {
-      const index = mediaArray.length; // ✅ índice real
+      const index = mediaArray.length;
       mediaArray.push({ type: "video", src: iframe.src });
 
       div.onclick = () => abrirModal(index);
+      // ✅ Soporte táctil explícito
+      div.addEventListener("touchend", (e) => {
+        e.stopPropagation();
+        abrirModal(index);
+      }, { passive: true });
     }
   });
 }
